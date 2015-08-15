@@ -21,3 +21,9 @@ Available variables are as follows:
 ####'chp':
 * The users current HP.  Defaults to _100_.
 
+####'text':
+* Display text; boolean y/n.  Defaults to _'n'_.
+
+Like all $_GET requests, variables should be appended to the end of the URL.  For example:
+* localhost:8080/dev/index.php?c=dd0000&mhp=543&chp=500&text=y
+** This URL will create a red bar with 500 out of 543 HP, with the HP text overlaid on top of the image.
