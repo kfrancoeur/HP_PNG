@@ -1,4 +1,99 @@
 <?php
+if (count($_REQUEST) != 0){ //At least some parameters were added.
+
+	//Initialize all variables based on $_GET.
+	$img_c = (ISSET($_GET['c']) && (strlen($_GET['c']) == 6) && ctype_xdigit($_GET['c']) 
+		? $_GET['c'] : "00dd00"); //Color of HP bar; default Green.
+	$img_c2 = (ISSET($_GET['c2']) && (strlen($_GET['c2']) == 6) && ctype_xdigit($_GET['c2']) 
+		? $_GET['c2'] : hexcolorreduc($img_c) ); //Color of HP bar; default darker $img_c.
+	$img_bg = (ISSET($_GET['bg']) && (strlen($_GET['bg']) == 6) && ctype_xdigit($_GET['bg'])
+		? $_GET['bg'] : "777777"); //Color of background; default grey
+	$img_bg2 = (ISSET($_GET['bg2']) && (strlen($_GET['bg2']) == 6) && ctype_xdigit($_GET['bg2'])
+		? $_GET['bg2'] : hexcolorreduc($img_bg) ); //Color of background; default darker bg2
+	$img_ol = (ISSET($_GET['ol']) && (strlen($_GET['ol']) == 6) && ctype_xdigit($_GET['ol'])
+		? str_split($_GET['ol'],2) : array("00","00","00") ); //Color of outlines; default black
+		
+	$img_w = (ISSET($_GET['w']) && is_numeric($_GET['w']) 
+		? $_GET['w'] : 200); //Width of HP bar; default 200
+	$img_h = (ISSET($_GET['h']) && is_numeric($_GET['h']) 
+		? $_GET['h'] : 40); //Height of HP bar; default 40
+		
+	$hp_cur = (ISSET($_GET['chp']) && is_numeric($_GET['chp']) 
+		? $_GET['chp'] : 100); //Current HP; default 100
+	$hp_max = (ISSET($_GET['mhp']) && is_numeric($_GET['mhp']) 
+		? $_GET['mhp'] : 100); //Max HP; default 100
+	
+
+	$img_hp = ($img_w / $hp_max) * $hp_cur;
+
+	//Create both halves of the bar.
+	$my_img = imagecreatetruecolor($img_w,$img_h);
+	image_gradientrect($my_img, 0, 0, $img_w, $img_h, $img_c, $img_c2);
+	image_gradientrect($my_img, $img_hp, 0, $img_w, $img_h, $img_bg, $img_bg2);
+
+	//Border between "current" and "max" portions of HP bar 
+	imagesetthickness ( $my_img, 2 );
+	$line_color = imagecolorallocate( $my_img, hexdec($img_ol[0]), hexdec($img_ol[1]), hexdec($img_ol[2]) );
+	imageline( $my_img, $img_hp, 1, $img_hp, $img_h, $line_color );
+
+	//Black borders ERRYWHERE
+	imageline( $my_img, 0, 1, $img_w, 1, $line_color );
+	imageline( $my_img, 0, $img_h-1, $img_w, $img_h-1, $line_color );
+	imageline( $my_img, 1, 0, 1, $img_h, $line_color );
+	imageline( $my_img, $img_w-1, 0, $img_w-1, $img_h, $line_color );
+
+	//Setting up for text
+	if (ISSET($_GET['text'])){
+		$font_color = imagecolorallocate($my_img, 255, 255, 255);
+		$stroke_color = imagecolorallocate($my_img, 0, 0, 0 );
+		imagettfstroketext($my_img, 14, 0, 10, 27, $font_color, $stroke_color, "fonts/arial.ttf", $hp_cur . " / " . $hp_max, 2);
+	}
+
+	imagepng( $my_img );
+	header( "Content-type: image/png" );
+	imagedestroy( $my_img );
+	
+}else{
+$textblock = '<h1><a id="user-content-hp_png" class="anchor" href="#hp_png" aria-hidden="true"><span class="octicon octicon-link"></span></a>HP_PNG</h1>
+	<p>HP_PNG is a $_GET-using, dynamic image creator designed for use with resource bars for PbP games.<br>
+	Available variables are as follows:</p>
+	<h4><a id="user-content-c" class="anchor" href="#c" aria-hidden="true"><span class="octicon octicon-link"></span></a>"c":</h4>
+	<ul>
+	<li>The color of the HP bar, in RGB hex.  Defaults to <em>"00dd00"</em> (green)</li>
+	</ul>
+	<h4><a id="user-content-bg" class="anchor" href="#bg" aria-hidden="true"><span class="octicon octicon-link"></span></a>"bg":</h4>
+	<ul>
+	<li>The color of the background / empty HP field, in RGB hex.  Defaults to <em>"777777</em>" (grey)</li>
+	</ul>
+	<h4><a id="user-content-w" class="anchor" href="#w" aria-hidden="true"><span class="octicon octicon-link"></span></a>"w":</h4>
+	<ul>
+	<li>The width of the image in pixels.  Defaults to <em>200 pixels</em>.</li>
+	</ul>
+	<h4><a id="user-content-h" class="anchor" href="#h" aria-hidden="true"><span class="octicon octicon-link"></span></a>"h":</h4>
+	<ul>
+	<li>The height of the image in pixels.  Defaults to <em>40 pixels</em>.</li>
+	</ul>
+	<h4><a id="user-content-mhp" class="anchor" href="#mhp" aria-hidden="true"><span class="octicon octicon-link"></span></a>"mhp":</h4>
+	<ul>
+	<li>The user"s maximum HP.  Defaults to <em>100</em>.</li>
+	</ul>
+	<h4><a id="user-content-chp" class="anchor" href="#chp" aria-hidden="true"><span class="octicon octicon-link"></span></a>"chp":</h4>
+	<ul>
+	<li>The users current HP.  Defaults to <em>100</em>.</li>
+	</ul>
+	<h4><a id="user-content-text" class="anchor" href="#text" aria-hidden="true"><span class="octicon octicon-link"></span></a>"text":</h4>
+	<ul>
+	<li>Display text; boolean y/n.  Defaults to <em>"n"</em>.</li>
+	</ul>
+	<p>Like all $_GET requests, variables should be appended to the end of the URL.  For example:</p>
+	<ul>
+	<li>localhost:8080/dev/index.php?c=dd0000&amp;mhp=543&amp;chp=500&amp;text=y</li>
+	<li>This URL will create a red bar with 500 out of 543 HP, with the HP text overlaid on top of the image.</li>
+	</ul>';
+	
+echo $textblock;
+}
+
 function image_gradientrect($img,$x,$y,$x1,$y1,$start,$end) {
 	//Function by Harshal Mahajan on Stack Overflow
 	//http://stackoverflow.com/questions/24822223/how-to-draw-a-gradient-rectangle-in-php
@@ -41,7 +136,7 @@ function imagettfstroketext(&$image, $size, $angle, $x, $y, &$textcolor, &$strok
 }
 
 function hexcolorreduc($color){
-	
+	//Darken passed in hex color
 	$color = str_split($color, 2);
 	
 	foreach ($color as &$value){
@@ -54,54 +149,4 @@ function hexcolorreduc($color){
 	return $color;
 }
 
-
-if (count($_REQUEST) != 0){ //At least some parameters were added.
-	
-	//Initialize all variables based on $_GET.
-	$img_c = (ISSET($_GET['c']) && (strlen($_GET['c']) == 6) && ctype_xdigit($_GET['c']) 
-		? $_GET['c'] : "00dd00"); //Color of HP bar; default Green.
-	$img_bg = (ISSET($_GET['bg']) && (strlen($_GET['bg']) == 6) && ctype_xdigit($_GET['bg'])
-		? $_GET['bg'] : "777777"); //Color of background; default grey
-	$img_w = (ISSET($_GET['w']) && is_numeric($_GET['w']) 
-		? $_GET['w'] : 200); //Width of HP bar; default 200
-	$img_h = (ISSET($_GET['h']) && is_numeric($_GET['h']) 
-		? $_GET['h'] : 40); //Height of HP bar; default 40
-	$hp_max = (ISSET($_GET['mhp']) && is_numeric($_GET['mhp']) 
-		? $_GET['mhp'] : 100); //Max HP; default 100
-	$hp_cur = (ISSET($_GET['chp']) && is_numeric($_GET['chp']) 
-		? $_GET['chp'] : 100); //Current HP; default 100
-
-
-	$img_hp = ($img_w / $hp_max) * $hp_cur;
-
-	//Create both halves of the bar.
-	$my_img = imagecreatetruecolor($img_w,$img_h);
-	image_gradientrect($my_img, 0, 0, $img_w, $img_h, $img_c, hexcolorreduc($img_c));
-	image_gradientrect($my_img, $img_hp, 0, $img_w, $img_h, $img_bg, hexcolorreduc($img_bg));
-
-	//Border between "current" and "max" portions of HP bar 
-	imagesetthickness ( $my_img, 2 );
-	$line_color = imagecolorallocate( $my_img, 0, 0, 0 );
-	imageline( $my_img, $img_hp, 1, $img_hp, $img_h, $line_color );
-
-	//Black borders ERRYWHERE
-	imageline( $my_img, 0, 1, $img_w, 1, $line_color );
-	imageline( $my_img, 0, $img_h-1, $img_w, $img_h-1, $line_color );
-	imageline( $my_img, 1, 0, 1, $img_h, $line_color );
-	imageline( $my_img, $img_w-1, 0, $img_w-1, $img_h, $line_color );
-
-	//Setting up for text
-	if (ISSET($_GET['text']) && ($_GET['text'] == 'y')){
-		$font_color = imagecolorallocate($my_img, 255, 255, 255);
-		$stroke_color = imagecolorallocate($my_img, 0, 0, 0);
-		imagettfstroketext($my_img, 14, 0, 10, 27, $font_color, $stroke_color, "fonts/arial.ttf", $hp_cur . " / " . $hp_max, 2);
-	}
-
-	imagepng( $my_img );
-	header( "Content-type: image/png" );
-	imagedestroy( $my_img );
-	
-}else{
-
-}
 ?>
