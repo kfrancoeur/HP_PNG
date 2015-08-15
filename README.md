@@ -10,7 +10,7 @@ Available variables are as follows:
 * The secondary bottom color of the HP bar, in RGB hex. Darker version of 'c' by default.
 
 ####'bg':
-* The color of the background / empty HP field, in RGB hex.  Defaults to _'777777_' (grey)
+* The color of the background / empty HP field, in RGB hex.  Defaults to _'777777'_ (grey)
 
 ####'bg2':
 * The secondary bottom color of the background, in RGB hex. Darker version of 'bg' by default.

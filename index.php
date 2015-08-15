@@ -54,42 +54,54 @@ if (count($_REQUEST) != 0){ //At least some parameters were added.
 	imagedestroy( $my_img );
 	
 }else{
-$textblock = '<h1><a id="user-content-hp_png" class="anchor" href="#hp_png" aria-hidden="true"><span class="octicon octicon-link"></span></a>HP_PNG</h1>
-	<p>HP_PNG is a $_GET-using, dynamic image creator designed for use with resource bars for PbP games.<br>
-	Available variables are as follows:</p>
-	<h4><a id="user-content-c" class="anchor" href="#c" aria-hidden="true"><span class="octicon octicon-link"></span></a>"c":</h4>
-	<ul>
-	<li>The color of the HP bar, in RGB hex.  Defaults to <em>"00dd00"</em> (green)</li>
-	</ul>
-	<h4><a id="user-content-bg" class="anchor" href="#bg" aria-hidden="true"><span class="octicon octicon-link"></span></a>"bg":</h4>
-	<ul>
-	<li>The color of the background / empty HP field, in RGB hex.  Defaults to <em>"777777</em>" (grey)</li>
-	</ul>
-	<h4><a id="user-content-w" class="anchor" href="#w" aria-hidden="true"><span class="octicon octicon-link"></span></a>"w":</h4>
-	<ul>
-	<li>The width of the image in pixels.  Defaults to <em>200 pixels</em>.</li>
-	</ul>
-	<h4><a id="user-content-h" class="anchor" href="#h" aria-hidden="true"><span class="octicon octicon-link"></span></a>"h":</h4>
-	<ul>
-	<li>The height of the image in pixels.  Defaults to <em>40 pixels</em>.</li>
-	</ul>
-	<h4><a id="user-content-mhp" class="anchor" href="#mhp" aria-hidden="true"><span class="octicon octicon-link"></span></a>"mhp":</h4>
-	<ul>
-	<li>The user"s maximum HP.  Defaults to <em>100</em>.</li>
-	</ul>
-	<h4><a id="user-content-chp" class="anchor" href="#chp" aria-hidden="true"><span class="octicon octicon-link"></span></a>"chp":</h4>
-	<ul>
-	<li>The users current HP.  Defaults to <em>100</em>.</li>
-	</ul>
-	<h4><a id="user-content-text" class="anchor" href="#text" aria-hidden="true"><span class="octicon octicon-link"></span></a>"text":</h4>
-	<ul>
-	<li>Display text; boolean y/n.  Defaults to <em>"n"</em>.</li>
-	</ul>
-	<p>Like all $_GET requests, variables should be appended to the end of the URL.  For example:</p>
-	<ul>
-	<li>localhost:8080/dev/index.php?c=dd0000&amp;mhp=543&amp;chp=500&amp;text=y</li>
-	<li>This URL will create a red bar with 500 out of 543 HP, with the HP text overlaid on top of the image.</li>
-	</ul>';
+$textblock = '<h1>HP_PNG</h1>
+<p>HP_PNG is a $_GET-using, dynamic image creator designed for use with resource bars for PbP games.<br>
+Available variables are as follows:</p>
+<h2></span>"c":</h2>
+<ul>
+<li>The color of the HP bar, in RGB hex.  Defaults to <em>"00dd00"</em> (green)</li>
+</ul>
+<h2>"c2":</h2>
+<ul>
+<li>The secondary bottom color of the HP bar, in RGB hex. Darker version of "c" by default.</li>
+</ul>
+<h2>"bg":</h2>
+<ul>
+<li>The color of the background / empty HP field, in RGB hex.  Defaults to <em>"777777"</em> (grey)</li>
+</ul>
+<h2>"bg2":</h2>
+<ul>
+<li>The secondary bottom color of the background, in RGB hex. Darker version of "bg" by default.</li>
+</ul>
+<h2>"ol":</h2>
+<ul>
+<li>The color of the outline, in RGB hex. Defaults to <em>"000000"</em>.</li>
+</ul>
+<h2>"w":</h2>
+<ul>
+<li>The width of the image in pixels.  Defaults to <em>200 pixels</em>.</li>
+</ul>
+<h2>"h":</h2>
+<ul>
+<li>The height of the image in pixels.  Defaults to <em>40 pixels</em>.</li>
+</ul>
+<h2>"mhp":</h2>
+<ul>
+<li>The user"s maximum HP.  Defaults to <em>100</em>.</li>
+</ul>
+<h2>"chp":</h2>
+<ul>
+<li>The users current HP.  Defaults to <em>100</em>.</li>
+</ul>
+<h2>"text":</h2>
+<ul>
+<li>Display text if exists.  Defaults to not display.</li>
+</ul>
+<p>Like all $_GET requests, variables should be appended to the end of the URL.  For example:</p>
+<ul>
+<li>localhost:8080/dev/index.php?c=dd0000&amp;mhp=543&amp;chp=500&amp;text</li>
+<li>This URL will create a red bar with 500 out of 543 HP, with the HP text overlaid on top of the image.</li>
+</ul>';
 	
 echo $textblock;
 }
