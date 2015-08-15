@@ -4,10 +4,10 @@ HP_PNG is a $_GET-using, dynamic image creator designed for use with resource ba
 Available variables are as follows:
 
 ####'c':
-* The color of the HP bar.  Defaults to _'00dd00'_ (green)
+* The color of the HP bar, in RGB hex.  Defaults to _'00dd00'_ (green)
 
 ####'bg':
-* The color of the background / empty HP field.  Defaults to _'777777_' (grey)
+* The color of the background / empty HP field, in RGB hex.  Defaults to _'777777_' (grey)
 
 ####'w':
 * The width of the image in pixels.  Defaults to _200 pixels_.
