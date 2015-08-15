@@ -2,6 +2,8 @@
 function image_gradientrect($img,$x,$y,$x1,$y1,$start,$end) {
 	//Function by Harshal Mahajan on Stack Overflow
 	//http://stackoverflow.com/questions/24822223/how-to-draw-a-gradient-rectangle-in-php
+	//Creates a gradient between two input colors.
+	
 	if($x > $x1 || $y > $y1) {
 	  return false;
 	}
@@ -29,6 +31,7 @@ function image_gradientrect($img,$x,$y,$x1,$y1,$start,$end) {
 function imagettfstroketext(&$image, $size, $angle, $x, $y, &$textcolor, &$strokecolor, $fontfile, $text, $px) {
 	//Function by John Ciacia on JohnCiacia.com
 	//http://www.johnciacia.com/2010/01/04/using-php-and-gd-to-add-border-to-text/
+	//Creates text with an outline.
  
     for($c1 = ($x-abs($px)); $c1 <= ($x+abs($px)); $c1++)
         for($c2 = ($y-abs($px)); $c2 <= ($y+abs($px)); $c2++)
@@ -38,6 +41,7 @@ function imagettfstroketext(&$image, $size, $angle, $x, $y, &$textcolor, &$strok
 }
 
 function hexcolorreduc($color){
+	
 	$color = str_split($color, 2);
 	
 	foreach ($color as &$value){
@@ -52,11 +56,8 @@ function hexcolorreduc($color){
 
 
 if (count($_REQUEST) != 0){ //At least some parameters were added.
-		
-	//print_r($_GET);
 	
-	//echo (is_numeric($_GET['mhp']) ? "true":"false");
-	//Initialize all variousble based on $_GET.
+	//Initialize all variables based on $_GET.
 	$img_c = (ISSET($_GET['c']) && (strlen($_GET['c']) == 6) && ctype_xdigit($_GET['c']) 
 		? $_GET['c'] : "00dd00"); //Color of HP bar; default Green.
 	$img_bg = (ISSET($_GET['bg']) && (strlen($_GET['bg']) == 6) && ctype_xdigit($_GET['bg'])
@@ -70,12 +71,10 @@ if (count($_REQUEST) != 0){ //At least some parameters were added.
 	$hp_cur = (ISSET($_GET['chp']) && is_numeric($_GET['chp']) 
 		? $_GET['chp'] : 100); //Current HP; default 100
 
-	//echo "<p>".$img_c."</p>"."<p>".$img_w."</p>"."<p>".$img_h."</p>".
-	//	"<p>".$hp_max."</p>"."<p>".$hp_cur."</p>";
 
 	$img_hp = ($img_w / $hp_max) * $hp_cur;
 
-		
+	//Create both halves of the bar.
 	$my_img = imagecreatetruecolor($img_w,$img_h);
 	image_gradientrect($my_img, 0, 0, $img_w, $img_h, $img_c, hexcolorreduc($img_c));
 	image_gradientrect($my_img, $img_hp, 0, $img_w, $img_h, $img_bg, hexcolorreduc($img_bg));
